@@ -20,6 +20,11 @@ namespace MyWebAPI.Controllers
                     Id = Guid.NewGuid(),
                     Name = "Diane",
                     Email = "d@mail.com"
+                },
+                new User {
+                    Id = Guid.NewGuid(),
+                    Name = "Kenneth",
+                    Email = "s@mail.com"
                 }
             };
         }
