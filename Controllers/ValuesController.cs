@@ -11,18 +11,20 @@ namespace MyWebAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        public List<User> users = new List<User>();
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
             return new User[] {
                 new User {
-                    Id = Guid.NewGuid(),
+                    Id = 1,
                     Name = "Diane",
                     Email = "d@mail.com"
                 },
                 new User {
-                    Id = Guid.NewGuid(),
+                    Id = 2,
                     Name = "Kenneth",
                     Email = "s@mail.com"
                 }
@@ -38,8 +40,16 @@ namespace MyWebAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Consumes("application/json")]
+        public IActionResult Post([FromBody]User user)
         {
+            users.Add(user);
+            bool isPosted = users.Contains(user);
+
+            if (isPosted)
+                return Ok(user);
+
+            return BadRequest(user);
         }
 
         // PUT api/values/5

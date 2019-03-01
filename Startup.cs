@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,6 @@ namespace MyWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var s = "tset";
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
@@ -55,9 +55,13 @@ namespace MyWebAPI
             }
 
             app.UseCors(MyAllowSpecificOrigins);
-
             app.UseHttpsRedirection();
+
             app.UseMvc();
+
+            app.Run(async (context) => {
+                await context.Response.WriteAsync("We didn't find the resource you're looking for");
+            });
         }
     }
 }
