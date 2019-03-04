@@ -17,18 +17,23 @@ namespace MyWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            return new User[] {
-                new User {
-                    Id = 1,
-                    Name = "Diane",
-                    Email = "d@mail.com"
-                },
-                new User {
+            users.Add(
+                new User
+                {
+                     Id = 1,
+                     Name = "Diane",
+                     Email = "d@mail.com"
+                });
+
+            users.Add(
+                new User
+                {
                     Id = 2,
                     Name = "Kenneth",
                     Email = "s@mail.com"
-                }
-            };
+                });
+
+            return users;
         }
 
         // GET api/values/5
@@ -41,6 +46,7 @@ namespace MyWebAPI.Controllers
         // POST api/values
         [HttpPost]
         [Consumes("application/json")]
+        [Produces("application/json")]
         public IActionResult Post([FromBody]User user)
         {
             users.Add(user);

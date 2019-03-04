@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyWebAPI.Data;
 
 namespace MyWebAPI
 {
@@ -37,7 +39,13 @@ namespace MyWebAPI
                 });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<UserContext>(options =>
+            {
+                options.UseInMemoryDatabase("UsersDB");
+            });
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddRouting(options => options.LowercaseUrls = true);
         }
@@ -49,17 +57,13 @@ namespace MyWebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseHsts();
-            }
 
             app.UseCors(MyAllowSpecificOrigins);
-            app.UseHttpsRedirection();
 
             app.UseMvc();
 
-            app.Run(async (context) => {
+            app.Run(async (context) =>
+            {
                 await context.Response.WriteAsync("We didn't find the resource you're looking for");
             });
         }
